@@ -1,5 +1,4 @@
 //HARRY ALVARADO 8-918-1897
-//PARCIAL #2
 #include<stdio.h>
 #include<windows.h>
 #include<math.h>
