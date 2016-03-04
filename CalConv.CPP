@@ -1,4 +1,5 @@
 //HARRY ALVARADO 8-918-1897
+// Versión 0.1
 #include<stdio.h>
 #include<windows.h>
 #include<math.h>
