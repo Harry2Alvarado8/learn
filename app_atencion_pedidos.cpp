@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <windows.h>
+#include <dos.h>
 #define MAX 5
 struct rest{
 	char nom[20];char ped[100];
@@ -15,50 +16,50 @@ int main(){
    void insertar_cola(pedidos [],int*,int*,pedidos);
    int cola_llena(int *);
    void eliminar_cola(pedidos [],int *,int *);
-   cout<<"1-Ingresar Pedido del Cliente"<<endl;
-   cout<<"2-Ver Lista de Pedidos"<<endl;
-   cout<<"3-Atender Pedido del Siguiente Cliente"<<endl;
-   cout<<"0-Salir/exit"<<endl;
    do{
-   //NumClient++;
-   cout<<"Ingrese una opcion:::::: ";
-   cin>>op;
+   if(fren!=-1){system("pause");}//Esto es solo para que no se inicie en al momento de iniciar el programa
+   cout<<"\t\n\t************************************************"<<endl;
+   cout<<"\t*\t1-Ingresar Pedido del Cliente          *"<<endl;
+   cout<<"\t*\t2-Ver Lista de Pedidos                 *"<<endl;
+   cout<<"\t*\t3-Atender Pedido del Siguiente Cliente *"<<endl;
+   cout<<"\t*\t0-Salir/exit                           *"<<endl;
+   cout<<"\t************************************************"<<endl;
+   cout<<"\n\tIngrese una opcion:::> ";     cin>>op;
    switch(op){
-   	case 3:
-      	cout<<"******ATENDIDO************"<<endl;
-         eliminar_cola(cola,&fren,&fin);
+   	case 0:	cout<<"\n\tSaliendo.";sleep(1);cout<<".";sleep(1);cout<<".";sleep(1);cout<<".";
       	break;
-   	case 0:	cout<<"Saliendo...."<<endl;
-      	break;
-   	case 1:   //cout<<"el bool "<<cola_llena(&fin)<<endl;
-                //cout<<"ver final "<<fin<<endl;          //solo muestra en pantalla el valor final noes necesario imprimir esto
-                //cout<<"ver frente "<<fren<<endl;        //tambien solo muestra
+   	case 1:
       			 if(cola_llena(&fin) == 1){    //la funcion juto con el if determina si podemos seguir introducion datos
-      					cout<<"\tLista de Pedidos Llena "<<endl;       //si esta llena nos dice
+      					cout<<"\tLista de Pedidos Llena "<<endl;
                      cout<<"Note: (para agregar mas pedidos favor terminar de atender los que ya estan en lista)"<<endl;
-      			 }else{                                 // en caso contrario
-                    		cout<<"\nNombre del Cliente: ";gets(pedido.nom);
-                        cout<<"Pedido :\n";gets(pedido.ped);
-                        cout<<"Precio : ";cin>>pedido.precio;
-                         insertar_cola(cola,&fren,&fin,pedido);
-                     }
+      			 }else{
+                		cout<<"\nNombre del Cliente: ";gets(pedido.nom);
+                     cout<<"Pedido : ";gets(pedido.ped);
+                     cout<<"Precio : B/. ";cin>>pedido.precio;
+                     insertar_cola(cola,&fren,&fin,pedido);		}
       	break;
       case 2:
-         cout<<"ver frente "<<fren<<endl;
-         cout<<"ver final "<<fin<<endl;
+         //cout<<"ver frente "<<fren<<endl;
+         //cout<<"ver final "<<fin<<endl;
          if(fren == -1&&fin==0||(fren == fin)){
-         cout<<"lista vacida"<<endl;
+         cout<<"\nlista vacida!!.."<<endl;
          }else{
       	for(int f=fren;f<fin;f++){
-            cout<<"\n\t# Client: FHG2372"<<NumClient + f<<"\n";
-         	//cout<<cola[f]<<endl;
+            cout<<"\n\t# Client: FH32"<<NumClient + f<<"\n";
             	cout<<"\tNombre del Cliente:	"<<cola[f].nom<<endl;
                cout<<"\tPedido del Cliente:	"<<cola[f].ped<<endl;
                cout<<"\tPrecio del Cliente:	"<<cola[f].precio<<endl; }
                }
       	break;
+      case 3:
+      	cout<<"\n\t********PEDIDOS************"<<endl;
+         eliminar_cola(cola,&fren,&fin);
+      	break;
+      default:
+      	cout<<"\nOpcion Invalida!!!..."<<endl;
+      	break;
       } }while(op!=0);
-   getch();
+   //getch();
 }
 
 void insertar_cola(pedidos cola[MAX],int *frente,int *final,pedidos dato){
