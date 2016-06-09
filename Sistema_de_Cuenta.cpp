@@ -19,9 +19,9 @@ int main(){
     SetConsoleTitle("Sistema de Cuenta Inc.");
 		Inventario *p;
     char menu;
-		int borraCrea = 0;//Variable borraCrea es la que me ayudara que la funcion de crear una lista cambie a insertar 
-   	Inventario *PrimerMenu(Inventario *,int borraCrea); 
-    Inventario *SegundoMenu(Inventario *);
+		bool borraCrea=false;//Variable borraCrea es la que me ayudara que la funcion de crear una lista cambie a insertar 
+   	Inventario *PrimerMenu(Inventario *,bool *); 
+    Inventario *SegundoMenu(Inventario *,bool *);
     do{ system("cls");
 			cout<<"\n\t********************************"<<endl;
 			cout<<"\t* 1. Manipular Inventario      *"<<endl;
@@ -33,9 +33,9 @@ int main(){
         case '0':
               cout<<"\tSaliendo..";sleep(1);cout<<".";sleep(0.5);cout<<".";sleep(1);cout<<".";
           break;
-       	case '1':    p = PrimerMenu(p,borraCrea);
+       	case '1':    p = PrimerMenu(p,&borraCrea);
           break;
-       	case '2':    p = SegundoMenu(p);
+       	case '2':    p = SegundoMenu(p,&borraCrea);
 				  break;
 				default: cout<<"Opcion Invalida!!...\n"<<endl;   break;
 	   		}	}while(menu!='0');
@@ -47,11 +47,12 @@ Inventario *memoria(Inventario *x){
 		return x;
 }
 
-Inventario *PrimerMenu(Inventario *p,int borraCrea = 0){
+Inventario *PrimerMenu(Inventario *p,bool *borraCrea){
     char menu;
-    Inventario* crea_insertaLista(Inventario*,int);    //Crea e Inserta Elem. en cualquier lista durente la ejecucion Return la lista
+    Inventario* crea_insertaLista(Inventario*,bool *);    //Crea e Inserta Elem. en cualquier lista durente la ejecucion Return la lista
     void guardar(Inventario*);          //Guarda el invetario
     void mostrarInventario(Inventario*);           //Imprime en pantalla lista completa de ultimo a primero
+      //borraCrea++;
       do{   system("cls");
               cout<<"\n\t***************************"<<endl;
               cout<<"\t* 1. Crea/Inserta Lista   *"<<endl;
@@ -62,16 +63,20 @@ Inventario *PrimerMenu(Inventario *p,int borraCrea = 0){
               cout<<"::> ";cin>>menu;
               switch(menu){
                 case '1':
-                    borraCrea++;
                       p = crea_insertaLista(p,borraCrea);
                   break;
                 case '2':
+                  //borraCrea++;
+                  if(*borraCrea){
                     mostrarInventario(p);cout<<"\n\n";
-                    system("pause");
+                  }else{cout<<"No se ha Creado Ninguna lista\n\n";}
+                  system("pause");
                   break;
                 case '3':
-                     guardar(p);
+                  //borraCrea++;
+                  if(*borraCrea){guardar(p); 
                      cout<<"\nInventario Salvado, Satisfactoriamente\n\n";
+                  }else{cout<<"No se ha Creado Ninguna lista\n\n";}
                      system("pause");
                   break;
                 case '4':
@@ -83,9 +88,9 @@ Inventario *PrimerMenu(Inventario *p,int borraCrea = 0){
       return p;
 }
 
-Inventario *SegundoMenu(Inventario *p){
+Inventario *SegundoMenu(Inventario *p,bool *borraCrea){
     char menu;//buscarNomProd[20];
-    Inventario* crea_insertaLista(Inventario*,int);    //Crea e Inserta Elem. en cualquier lista durente la ejecucion Return la lista
+    Inventario* crea_insertaLista(Inventario*,bool);    //Crea e Inserta Elem. en cualquier lista durente la ejecucion Return la lista
     void guardar(Inventario*);          //Guarda el invetario
     void mostrarInventario(Inventario*);           //Imprime lista completa de ultimo a primero
     Inventario* buscarProducto(Inventario*);            //busca Elem. Char en toda la lista   Return la lista (en este caso porque eliminamos datos)
@@ -100,17 +105,27 @@ Inventario *SegundoMenu(Inventario *p){
               cout<<"::> ";cin>>menu;
             switch(menu){
                 case '1':
-                    // cout<<"\nNombre del Item: "; cin>>buscarNomProd;
-                     p = buscarProducto(p);
+                    if (*borraCrea){
+                      p = buscarProducto(p);
+                    }else{
+                      cout<<"No se ha Creado Ninguna lista\n\n";  }
+                     
                      system("pause");
                   break;
                 case '2':
+                  if(*borraCrea){
                     mostrarInventario(p);cout<<"\n\n";
+                  }else{
+                    cout<<"No se ha Creado Ninguna Lista\n\n";
+                  }
                     system("pause");
                   break;
                 case '3':
+                  if(*borraCrea){
                     guardar(p);
                     cout<<"\nSe a Resguardado, Satisfactoriamente\n\n";
+                  }else{
+                    cout<<"No se ha Creado Ninguna Lista\n\n";}
                     system("pause");
                   break;
                 case '4':
@@ -157,11 +172,12 @@ Inventario *buscarProducto(Inventario *p){
         }}while(menu!='4');
         return p;
 }
-Inventario *crea_insertaLista(Inventario *p,int borraCrea){
+Inventario *crea_insertaLista(Inventario *p,bool *borraCrea){
 		//fstream file;      // DECLARACION Y VARIABLE forma directa
 		char sino; Inventario*q;
      // file.open("lol.txt",ios::out);  //OPEN  forma directa
-    if(borraCrea==1){
+    if(*borraCrea == false){
+      *borraCrea=true;
 		  p = memoria(p);
 			cout<<"\nNombre de Item:     \t";  cin>>p->NombreProd;
 			cout<<"Codigo del Item:    \t";  cin>>p->CodigoProd;
@@ -175,8 +191,8 @@ Inventario *crea_insertaLista(Inventario *p,int borraCrea){
 			cout<<"::>: ";cin>>sino;
       if(!(sino=='1'||sino=='2')){
         cout<<" '"<<sino<<"' no es una Opcion"<<endl; }
-      borraCrea++;   }
-		while(sino=='1' ||borraCrea !=1){
+         }
+		while(sino=='1' ||*borraCrea !=false){
       	if(sino == '2'){break;} 
       	 q = memoria(q);
     			cout<<"\nNombre de Item:  \t"; cin>>q->NombreProd;
@@ -201,7 +217,7 @@ void mostrarInventario(Inventario *p){
       cout<<" Nombre\t"<<"\tCosto   "<<"\tCodigo"<<endl;
       cout<<"--------------------------------------"<<endl;
 		while(q!=NULL){
-    			cout<<" "<<q->NombreProd<<"\t\t"<<q->CostoProd<<"\t\t"<<q->CodigoProd<<endl;
+          			cout<<" "<<q->NombreProd<<"\t\t"<<q->CostoProd<<"\t\t"<<q->CodigoProd<<endl;
 			q=q->nodo;
    		}
 }
@@ -213,6 +229,7 @@ void guardar(Inventario *p){
     x.open("prueba2805.txt",ios::out);
       if(!x)cout<<"Error al guardar los datos!!...\n\n";
 		  while(q!=NULL){
+
     		x<<q->NombreProd<<"\t\t"<<q->CostoProd<<"\t\t"<<q->CodigoProd<<endl;
 			  q=q->nodo;   }
       x.close();
