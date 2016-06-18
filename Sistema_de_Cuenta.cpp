@@ -97,6 +97,8 @@ Inventario *PrimerMenu(Inventario *p,bool *borraCrea){
                   break;
                 case '3':
                     p = InventarioExitente(borraCrea);
+                    cout<<"\n\t\tInventario Agregado Satisfactoriamente!!..\n\n";
+                    system("pause");
                   break;
                 case '4':
                   if(*borraCrea){guardar(p); 
@@ -320,7 +322,7 @@ Inventario *buscarNombrePdo(Inventario *p,char NombrePdo[20]){
     Inventario *facturaProducto(Inventario *,char [],float ,int ,int ,float *,float *,float *);        //funcion elimina dato
     Inventario *q;
     bool r = false;
-    int x = 1,cantEncontrada=0,cant_paraFacturar,m=0; 
+    int x = 1,cantEncontrada=0,cant_paraFacturar; 
     float Total=0,SubTotal=0,ITBM=0;
     char sino;
     q=p;
@@ -355,10 +357,10 @@ Inventario *buscarNombrePdo(Inventario *p,char NombrePdo[20]){
               cout<<"\n\t\t Nombre\t"<<"\tCodigo "<<"\t\tCantidad Costo "<<endl;
               cout<<"\t\t----------------------------------------------"<<endl;
               //cantEncontrada = cantEncontrada;
-              do{
+            //  do{
                 p = facturaProducto(p,NombrePdo,NULL,x,cant_paraFacturar,&Total,&SubTotal,&ITBM);        //funcion elimina dato
-                m++;
-                }while(cant_paraFacturar!=m); 
+            //    m++;
+            //    }while(cant_paraFacturar!=m); 
                 cout<<"\n\t\t---------------------------------------------"<<endl;
                 cout<<"\t\t SubTotal:\t\t\t\t"<<SubTotal<<endl;
                 cout<<"\t\t ITBM:    \t\t\t\t"<<ITBM<<endl;
@@ -425,7 +427,7 @@ Inventario *buscarPrecioPdo(Inventario *p,float PrecioPdo){
     Inventario *facturaProducto(Inventario *,char [],float ,int ,int ,float *,float *,float *);        //funcion elimina dato
     Inventario *q;
     bool r = false;
-    int x = 3,cantEncontrada=0,cant_paraFacturar,m=0;
+    int x = 3,cantEncontrada=0,cant_paraFacturar;
     float Total=0,SubTotal=0,ITBM=0;
     char sino;
     q=p;
@@ -457,10 +459,10 @@ Inventario *buscarPrecioPdo(Inventario *p,float PrecioPdo){
               cout<<"\n\t\tSe ha Realizado la Facturacion del Item:\n\n";
               cout<<"\t\t Nombre\t\t"<<"Codigo"<<"\t\tCosto"<<endl;
               cout<<"\t\t---------------------------------------"<<endl;
-              do{
+             // do{
                 p = facturaProducto(p,NULL,PrecioPdo,x,cant_paraFacturar,&Total,&SubTotal,&ITBM);        //funcion elimina dato
-                m++;
-                }while(cant_paraFacturar!=m); 
+               // m++;
+               // }while(cant_paraFacturar!=m); 
                 cout<<"\n\t\t---------------------------------------"<<endl;
                 cout<<"\t\t SubTotal:\t\t\t"<<SubTotal<<endl;
                 cout<<"\t\t ITBM:    \t\t\t"<<ITBM<<endl;
@@ -475,15 +477,20 @@ Inventario *buscarPrecioPdo(Inventario *p,float PrecioPdo){
 
 Inventario *facturaProducto(Inventario *p,char nom[20],float PrecioProd,int x,int cant_paraFacturar,float *Total=0,float *SubTotal=0,float *ITBM=0){
     Inventario *q,*t,*z;
-    //int cant_paraFacturar =4;
       q=z=p;
       bool r = true;
-      int suma=0;
+      int suma=0,ultimo;
       if(x == 1){
         while(z!=NULL){                         //vea lo que se esta facturando o eliminado de la lista
           if(!strcmp(nom,z->NombreProd)){
-            //cout<<"\t\t "<<z->NombreProd<<"\t\t"<<z->CodigoProd<<"\t\t"<<z->CostoProd<<endl; /*suma++; */
-            cout<<"\t\t "<<q->NombreProd<<"\t\t"<<q->CodigoProd<<"\t"<<q->CantidadProd<<"\t"<<q->CostoProd<<endl;
+            cout<<"\t\t "<<z->NombreProd<<"\t\t"<<z->CodigoProd<<"\t\t  "<<cant_paraFacturar<<"  x  "<<z->CostoProd<<endl;
+              z->CostoProd;
+               ultimo = z->CantidadProd;
+              if(cant_paraFacturar == z->CantidadProd){
+                ultimo = 1;
+              }else{
+                z->CantidadProd -= cant_paraFacturar;
+              }
                *SubTotal+=z->CostoProd; break;}
              z=z->nodo;     }
         while(strcmp(nom,q->NombreProd) && (r == true)){
@@ -514,14 +521,16 @@ Inventario *facturaProducto(Inventario *p,char nom[20],float PrecioProd,int x,in
                }else{   r = false;   }
         }
       }
+      if(ultimo==1){
       if(r == false){
           cout<<"Elemento con informacion x no se encuantra en lista\n\n";
       }else{
           if(p == q){
                 p = q->nodo;
-            }else{
+          }else{
                 t->nodo = q->nodo;
-                  }
+                }
+      }
       }
       *SubTotal *= cant_paraFacturar;
       *ITBM = (*SubTotal * 0.07);
