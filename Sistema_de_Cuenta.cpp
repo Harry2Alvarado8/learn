@@ -5,6 +5,7 @@
 #include <conio.h>
 #include <fstream>
 #include <dos.h>
+#include <stdio.h>
 //using namespace std;
 typedef struct ListaInventario{
   char NombreProd[20];
@@ -24,7 +25,12 @@ int main(){
     bool borraCrea=false;//Variable borraCrea es la que me ayudara que la funcion de crear una lista cambie a insertar 
     Inventario *PrimerMenu(Inventario *,bool *); 
     Inventario *SegundoMenu(Inventario *,bool *);
+    textcolor(7);
+
     do{ system("cls");
+      cout<<"\n\t\t\t     WORLD COMPUTER STORE S.A.\n";
+      cout<<"\n\t\t\t R.U.C.: 280607-1-80808  D.V.: 19\n";
+      printf("\n\t\t\t\t   Menu Principal\n");
       cout<<"\n\t\t\t**********************************"<<endl;
       cout<<"\t\t\t|                                |"<<endl;
       cout<<"\t\t\t|   1. Manipular Inventario      |"<<endl;
@@ -63,6 +69,9 @@ Inventario *PrimerMenu(Inventario *p,bool *borraCrea){
     Inventario *insertarLista(Inventario *);
       //borraCrea++;
       do{   system("cls");
+            cout<<"\n\t\t\t     WORLD COMPUTER STORE S.A.\n";
+            cout<<"\n\t\t\t R.U.C.: 280607-1-80808  D.V.: 19\n";
+            cout<<"\n\t\t\tMenu de Manipulacion de Inventario\n";
             cout<<"\n\t\t\t********************************"<<endl;
             cout<<"\t\t\t|                              |"<<endl;
             if(*borraCrea==0){
@@ -73,7 +82,7 @@ Inventario *PrimerMenu(Inventario *p,bool *borraCrea){
             cout<<"\t\t\t|                              |"<<endl;
             cout<<"\t\t\t|   2. Ver el Inventario       |"<<endl;
             cout<<"\t\t\t|                              |"<<endl;
-            cout<<"\t\t\t|   3. Ver lista Existente     |"<<endl;
+            cout<<"\t\t\t|   3. leer lista Existente    |"<<endl;
             cout<<"\t\t\t|                              |"<<endl;
             cout<<"\t\t\t|   4. Guardar el Inventario   |"<<endl;
             cout<<"\t\t\t|                              |"<<endl;
@@ -122,6 +131,9 @@ Inventario *SegundoMenu(Inventario *p,bool *borraCrea){
     void mostrarInventario(Inventario*);           //Imprime lista completa de ultimo a primero
     Inventario* buscarProducto(Inventario*);            //busca Elem. Char en toda la lista   Return la lista (en este caso porque eliminamos datos)
     do{   system("cls");
+            cout<<"\n\t\t\t     WORLD COMPUTER STORE S.A.\n";
+            cout<<"\n\t\t\t R.U.C.: 280607-1-80808  D.V.: 19\n";
+            cout<<"\n\t\t\tMenu de Facturizacion de un Inventario\n";
             cout<<"\n\t\t\t*************************************"<<endl;
             cout<<"\t\t\t|                                   |"<<endl;
             cout<<"\t\t\t|  1. Buscar Item(articulo)         |"<<endl;
