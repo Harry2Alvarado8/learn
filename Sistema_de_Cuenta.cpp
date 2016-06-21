@@ -93,16 +93,14 @@ Inventario *PrimerMenu(Inventario *p,bool *borraCrea){
             cout<<"\t\t\t\t    ::>> ";cin>>menu;
               switch(menu){
                 case '1':
-                    //p = crea_insertaLista(p,borraCrea);
                   if(*borraCrea){
-                    //mostrarInventario(p);cout<<"\n\n";
                     p = insertarLista(p);
-                  }else{p = creaLista(p,borraCrea);}
+                  }else{ p = creaLista(p,borraCrea); }
                   break;
                 case '2':
-                 // if(*borraCrea){
+                  if(*borraCrea){
                     mostrarInventario(p);cout<<"\n\n";
-                  //}else{cout<<"No se ha Creado Ninguna lista\n\n";}
+                  }else{cout<<"\n\tNo se ha Creado Ninguna lista\n\n";}
                   system("pause");
                   break;
                 case '3':
@@ -111,14 +109,16 @@ Inventario *PrimerMenu(Inventario *p,bool *borraCrea){
                     system("pause");
                   break;
                 case '4':
+                  if(*borraCrea){
                     cout<<"\n\n\t\t\t Nombre del producto: ";cin>>NombreProd;
                     p = buscarNombrePdoDefectuoso(p,NombreProd,NULL);
+                  }else{ cout<<"\n\tNo se ha Creado Ninguna lista\n\n"; }
                     system("pause");
                   break;
                 case '5':
                   if(*borraCrea){guardar(p); 
                     cout<<"\n\t\t\tInventario Salvado, Satisfactoriamente\n\n";
-                  }else{cout<<"No se ha Creado Ninguna lista\n\n";}
+                  }else{cout<<"\n\tNo se ha Creado Ninguna lista\n\n";}
                     system("pause");
                   break;
                 case '6':
@@ -159,14 +159,14 @@ Inventario *SegundoMenu(Inventario *p,bool *borraCrea){
                       gets(NombreCliente);
                       p = buscarProducto(p,NombreCliente);
                     }else{
-                      cout<<"No se ha Creado Ninguna lista\n\n";  }
+                      cout<<"\n\tNo se ha Creado Ninguna lista\n\n";  }
                      system("pause");
                   break;
                 case '2':
                   if(*borraCrea){
                     mostrarInventario(p);cout<<"\n\n";
                   }else{
-                    cout<<"No se ha Creado Ninguna Lista\n\n";
+                    cout<<"\n\tNo se ha Creado Ninguna Lista\n\n";
                   }
                     system("pause");
                   break;
@@ -175,7 +175,7 @@ Inventario *SegundoMenu(Inventario *p,bool *borraCrea){
                     guardar(p);
                     cout<<"\nSe a Resguardado, Satisfactoriamente\n\n";
                   }else{
-                    cout<<"No se ha Creado Ninguna Lista\n\n";}
+                    cout<<"\n\tNo se ha Creado Ninguna Lista\n\n";}
                     system("pause");
                   break;
                 case '4':
@@ -296,11 +296,12 @@ Inventario *InventarioExitente(bool *borraCrea){
   Inventario *p,*q;
   char Nombre[20],Codigo[7];
   float Costo;
-  int Cantidad; 
-  bool controlaCrea = true;
+  int Cantidad;
+  bool controlaCrea = *borraCrea; 
   q = memoria(q);
   y.open("prueba2805.txt",ios::in);
-    while(controlaCrea == true && !y.eof()){
+  //if(*borraCrea == false){
+    while(controlaCrea == false && !y.eof()){
       p = memoria(p);
       y>>Nombre;
       y>>Costo;
@@ -311,7 +312,7 @@ Inventario *InventarioExitente(bool *borraCrea){
         strcpy(p->CodigoProd,Codigo);
         p->CantidadProd = Cantidad;
       p->nodo = NULL;
-      controlaCrea = false;}
+      controlaCrea = true;}  // }
       do{
       q = memoria(q);
       y>>Nombre;
@@ -329,18 +330,16 @@ Inventario *InventarioExitente(bool *borraCrea){
   y.close();
   p = elimina(p);
   return p; 
-}              
+}           
 
 Inventario *buscarNombrePdo(Inventario *p,char NombrePdo[20],char NombreCliente[20]){
     Inventario *facturaProducto(Inventario *,char [],int ,int ,int ,float *,float *,float *);        //funcion elimina dato
-    Inventario *q,*E;
+    Inventario *q;
     bool r = false;
     int x = 1,cantEncontrada=0,cant_paraFacturar,EfectivoView=0; 
     float Total=0,SubTotal=0,ITBM=0,Efectivo,Cambio;
     char sino;
-    q=p;  E=p;
-   // cout<<"\n\t\t Nombre\t\t"<<"Costo "<<"\t\tCodigo"<<endl;
-   // cout<<"\t\t--------------------------------------"<<endl;
+    q=p; 
     cout<<"\n\t\t Nombre\t"<<"\tCosto "<<"\tCodigo \tCantidad "<<endl;
     cout<<"\t\t-----------------------------------------"<<endl;
     while(q!=NULL){
@@ -362,7 +361,7 @@ Inventario *buscarNombrePdo(Inventario *p,char NombrePdo[20],char NombreCliente[
          }else{
           EfectivoView = 0;
           cout<<"\t\t|----------------------------------------------|"<<endl;
-          E = facturaProducto(E,NombrePdo,x,cant_paraFacturar,EfectivoView,&Total,&SubTotal,&ITBM);
+          p = facturaProducto(p,NombrePdo,x,cant_paraFacturar,EfectivoView,&Total,&SubTotal,&ITBM);
           cout<<"\t\t|----------------------------------------------|"<<endl;
           cout<<"\t\t    |\t Saldo a Pagar :: $ "<<Total<<"       |"<<endl;
           cout<<"\t\t|----------------------------------------------|"<<endl;
@@ -400,12 +399,12 @@ Inventario *buscarNombrePdo(Inventario *p,char NombrePdo[20],char NombreCliente[
 
 Inventario *buscarCodigoPdo(Inventario *p,char CodigoPdo[10],char NombreCliente[20]){
     Inventario *facturaProducto(Inventario *,char [],int ,int ,int ,float *,float *,float *);        //funcion elimina dato
-    Inventario *q,*E;
+    Inventario *q;
     bool r = false;
     int x = 2,cantEncontrada=0,cant_paraFacturar,EfectivoView=0; 
     float Total=0,SubTotal=0,ITBM=0,Efectivo,Cambio;
     char sino;
-    q=p;  E=p;
+    q=p; 
     cout<<"\n\t\t Nombre\t"<<"\tCosto "<<"\tCodigo \tCantidad "<<endl;
     cout<<"\t\t-----------------------------------------"<<endl;
     while(q!=NULL){
@@ -427,7 +426,7 @@ Inventario *buscarCodigoPdo(Inventario *p,char CodigoPdo[10],char NombreCliente[
          }else{
           EfectivoView = 0;
           cout<<"\t\t|----------------------------------------------|"<<endl;
-          E = facturaProducto(E,CodigoPdo,x,cant_paraFacturar,EfectivoView,&Total,&SubTotal,&ITBM);
+          p = facturaProducto(p,CodigoPdo,x,cant_paraFacturar,EfectivoView,&Total,&SubTotal,&ITBM);
           cout<<"\t\t|----------------------------------------------|"<<endl;
           cout<<"\t\t    |\t Saldo a Pagar :: $ "<<Total<<"       |"<<endl;
           cout<<"\t\t|----------------------------------------------|"<<endl;
