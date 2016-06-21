@@ -19,7 +19,7 @@ typedef struct ListaInventario{
 Inventario *memoria(Inventario*);
 int main(){
     system("color 0A");
-    SetConsoleTitle("Sistema de Cuenta Inc.");
+    SetConsoleTitle("Sistema de Cuenta WORLD COMPUTER STORE S.A. ");
     Inventario *p;
     char menu;
     bool borraCrea=false;//Variable borraCrea es la que me ayudara que la funcion de crear una lista cambie a insertar 
@@ -61,34 +61,35 @@ Inventario *memoria(Inventario *x){
 
 Inventario *PrimerMenu(Inventario *p,bool *borraCrea){
     char menu;
-    //Inventario* crea_insertaLista(Inventario*,bool *);    //Crea e Inserta Elem. en cualquier lista durente la ejecucion Return la lista
     void guardar(Inventario*);          //Guarda el invetario
     void mostrarInventario(Inventario*);           //Imprime en pantalla lista completa de ultimo a primero
+    char NombreProd[20];
     Inventario *InventarioExitente(bool *);  
     Inventario *creaLista(Inventario *,bool *);
     Inventario *insertarLista(Inventario *);
-      //borraCrea++;
+    Inventario* buscarNombrePdoDefectuoso(Inventario*,char [],char []);
       do{   system("cls");
             cout<<"\n\t\t\t     WORLD COMPUTER STORE S.A.\n";
             cout<<"\n\t\t\t R.U.C.: 280607-1-80808  D.V.: 19\n";
             cout<<"\n\t\t\tMenu de Manipulacion de Inventario\n";
-            cout<<"\n\t\t\t********************************"<<endl;
-            cout<<"\t\t\t|                              |"<<endl;
+            cout<<"\n\t\t\t************************************"<<endl;
+            cout<<"\t\t\t|                                  |"<<endl;
             if(*borraCrea==0){
-            cout<<"\t\t\t|   1. Crear Lista             |"<<endl;
+            cout<<"\t\t\t|   1. Crear Lista                 |"<<endl;
             }else{
-            cout<<"\t\t\t|   1. Insertar articulos      |"<<endl;}
-            //cout<<"\t\t\t|   1. Crear o Insertar Lista    |"<<endl;
-            cout<<"\t\t\t|                              |"<<endl;
-            cout<<"\t\t\t|   2. Ver el Inventario       |"<<endl;
-            cout<<"\t\t\t|                              |"<<endl;
-            cout<<"\t\t\t|   3. leer lista Existente    |"<<endl;
-            cout<<"\t\t\t|                              |"<<endl;
-            cout<<"\t\t\t|   4. Guardar el Inventario   |"<<endl;
-            cout<<"\t\t\t|                              |"<<endl;
-            cout<<"\t\t\t|   5. Menu Principal          |"<<endl;
-            cout<<"\t\t\t|                              |"<<endl;
-            cout<<"\t\t\t********************************"<<endl;
+            cout<<"\t\t\t|   1. Insertar articulos          |"<<endl;}
+            cout<<"\t\t\t|                                  |"<<endl;
+            cout<<"\t\t\t|   2. Ver el Inventario           |"<<endl;
+            cout<<"\t\t\t|                                  |"<<endl;
+            cout<<"\t\t\t|   3. leer lista Existente        |"<<endl;
+            cout<<"\t\t\t|                                  |"<<endl;
+            cout<<"\t\t\t|   4. Borrar Articulo Defectuoso  |"<<endl;
+            cout<<"\t\t\t|                                  |"<<endl;
+            cout<<"\t\t\t|   5. Guardar el Inventario       |"<<endl;
+            cout<<"\t\t\t|                                  |"<<endl;
+            cout<<"\t\t\t|   6. Menu Principal              |"<<endl;
+            cout<<"\t\t\t|                                  |"<<endl;
+            cout<<"\t\t\t************************************"<<endl;
             cout<<"\t\t\t\t    ::>> ";cin>>menu;
               switch(menu){
                 case '1':
@@ -110,26 +111,31 @@ Inventario *PrimerMenu(Inventario *p,bool *borraCrea){
                     system("pause");
                   break;
                 case '4':
+                    cout<<"\n\n\t\t\t Nombre del producto: ";cin>>NombreProd;
+                    p = buscarNombrePdoDefectuoso(p,NombreProd,NULL);
+                    system("pause");
+                  break;
+                case '5':
                   if(*borraCrea){guardar(p); 
                     cout<<"\n\t\t\tInventario Salvado, Satisfactoriamente\n\n";
                   }else{cout<<"No se ha Creado Ninguna lista\n\n";}
                     system("pause");
                   break;
-                case '5':
+                case '6':
                     cout<<"\n\n\t\t\t   Regresando al Menu Principal..";sleep(1);cout<<".";sleep(0.5);cout<<".";sleep(0.7);cout<<".";
                   break;
                 default: cout<<"Opcion Invalida!!..\n\n";sleep(1);
                   break;
-                  } }while('5'!=menu);
+                  } }while('6'!=menu);
       return p;
 }
 
 Inventario *SegundoMenu(Inventario *p,bool *borraCrea){
-    char menu;//buscarNomProd[20];
+    char menu,NombreCliente[20];
     Inventario* crea_insertaLista(Inventario*,bool);    //Crea e Inserta Elem. en cualquier lista durente la ejecucion Return la lista
     void guardar(Inventario*);          //Guarda el invetario
     void mostrarInventario(Inventario*);           //Imprime lista completa de ultimo a primero
-    Inventario* buscarProducto(Inventario*);            //busca Elem. Char en toda la lista   Return la lista (en este caso porque eliminamos datos)
+    Inventario* buscarProducto(Inventario*,char []);            //busca Elem. Char en toda la lista   Return la lista (en este caso porque eliminamos datos)
     do{   system("cls");
             cout<<"\n\t\t\t     WORLD COMPUTER STORE S.A.\n";
             cout<<"\n\t\t\t R.U.C.: 280607-1-80808  D.V.: 19\n";
@@ -149,7 +155,9 @@ Inventario *SegundoMenu(Inventario *p,bool *borraCrea){
             switch(menu){
                 case '1':
                     if (*borraCrea){
-                      p = buscarProducto(p);
+                      cout<<"\n\n\tNombre del Cliente: ";
+                      gets(NombreCliente);
+                      p = buscarProducto(p,NombreCliente);
                     }else{
                       cout<<"No se ha Creado Ninguna lista\n\n";  }
                      system("pause");
@@ -177,42 +185,35 @@ Inventario *SegundoMenu(Inventario *p,bool *borraCrea){
                   }}while('4'!=menu);
       return p;
 }
-Inventario *buscarProducto(Inventario *p){
+Inventario *buscarProducto(Inventario *p,char NombreCliente[20]){
     char menu,NombreProd[20],CodigoProd[10];
     float PrecioProd;
     int clear=0;
-    Inventario* buscarNombrePdo(Inventario*,char []);            //busca Elem. Char en toda la lista   Return la lista (en este caso porque eliminamos datos)
-    Inventario* buscarCodigoPdo(Inventario*,char []);
-    Inventario* buscarPrecioPdo(Inventario*,float);
-    do{if(clear>=1){system("cls");}
+    Inventario* buscarNombrePdo(Inventario*,char [],char []);            //busca Elem. Char en toda la lista   Return la lista (en este caso porque eliminamos datos)
+    Inventario* buscarCodigoPdo(Inventario*,char [],char []);
+    do{if(clear>=1){system("cls");  cout<<"\n\n\t\t Para el cliente: "<<NombreCliente<<endl;}
       cout<<"\n\n";clear++;
       cout<<"\t\tComo deseas buscar el producto?\n";
-      cout<<"\t\t [1] Nombre\n";
-      cout<<"\t\t [2] Codigo\n";
-      cout<<"\t\t [3] Precio\n";
-      cout<<"\t\t [4] Dejar de buscar\n";
+      cout<<"\t\t  [1] Nombre\n";
+      cout<<"\t\t  [2] Codigo\n";
+      cout<<"\t\t  [3] Dejar de buscar\n";
       cout<<"\t\t::> ";cin>>menu;
       switch(menu){
         case '1':
               cout<<"\n\t\tNombre del Item: "; cin>>NombreProd;
-                p = buscarNombrePdo(p,NombreProd);
+                p = buscarNombrePdo(p,NombreProd,NombreCliente);
               system("pause");
           break;
         case '2':
               cout<<"\n\t\tCodigo del Item: "; cin>>CodigoProd;
-                p = buscarCodigoPdo(p,CodigoProd);
+                p = buscarCodigoPdo(p,CodigoProd,NombreCliente);
               system("pause");
           break;
-        case '3':
-              cout<<"\n\t\tPrecio del Item: "; cin>>PrecioProd;
-                p = buscarPrecioPdo(p,PrecioProd);
-              system("pause");
-          break;
-        case '4': cout<<"Saliendo del buscador..."<<endl;
+        case '3': cout<<"\n\t\t\tSaliendo del buscador..."<<endl;
           break;
         default:  cout<<"Opcion Invalida!!..."<<endl; sleep(1);
           break;
-        }}while(menu!='4');
+        }}while(menu!='3');
         return p;
 }
 
@@ -330,14 +331,14 @@ Inventario *InventarioExitente(bool *borraCrea){
   return p; 
 }              
 
-Inventario *buscarNombrePdo(Inventario *p,char NombrePdo[20]){
-    Inventario *facturaProducto(Inventario *,char [],float ,int ,int ,float *,float *,float *);        //funcion elimina dato
-    Inventario *q;
+Inventario *buscarNombrePdo(Inventario *p,char NombrePdo[20],char NombreCliente[20]){
+    Inventario *facturaProducto(Inventario *,char [],int ,int ,int ,float *,float *,float *);        //funcion elimina dato
+    Inventario *q,*E;
     bool r = false;
-    int x = 1,cantEncontrada=0,cant_paraFacturar; 
-    float Total=0,SubTotal=0,ITBM=0;
+    int x = 1,cantEncontrada=0,cant_paraFacturar,EfectivoView=0; 
+    float Total=0,SubTotal=0,ITBM=0,Efectivo,Cambio;
     char sino;
-    q=p;
+    q=p;  E=p;
    // cout<<"\n\t\t Nombre\t\t"<<"Costo "<<"\t\tCodigo"<<endl;
    // cout<<"\t\t--------------------------------------"<<endl;
     cout<<"\n\t\t Nombre\t"<<"\tCosto "<<"\tCodigo \tCantidad "<<endl;
@@ -352,51 +353,64 @@ Inventario *buscarNombrePdo(Inventario *p,char NombrePdo[20]){
           if(cantEncontrada > 1){cout<<"\n\t\tSe han encontrado "<<cantEncontrada<<" Elemento\n\n";}
             r = true;
          }else{
-         cout<<"\n\t\tNo exite Item en esta Lista\n\n";   }
+         cout<<"\n\t\t\tNo exite Item en esta Lista\n\n";   }
          if(r){
          cout<<"\t\tCantidad a Facturar: ";
          cin>>cant_paraFacturar;
          if(cant_paraFacturar>cantEncontrada){
          cout<<"\n\t\tCantidad insuficiente para el pedido!!\n\n";
          }else{
+          EfectivoView = 0;
+          cout<<"\t\t|----------------------------------------------|"<<endl;
+          E = facturaProducto(E,NombrePdo,x,cant_paraFacturar,EfectivoView,&Total,&SubTotal,&ITBM);
+          cout<<"\t\t|----------------------------------------------|"<<endl;
+          cout<<"\t\t    |\t Saldo a Pagar :: $ "<<Total<<"       |"<<endl;
+          cout<<"\t\t|----------------------------------------------|"<<endl;
+          cout<<"\t\t\tEfectivo >> $ ";cin>>Efectivo;
+          Total=0;SubTotal=0;ITBM=0;
           cout<<"\n\t\t\t[1] Facturar \t";
           cout<<"[2] Cancelar \n";
           cout<<"\n\t\t\t::> ";cin>>sino;
             if(sino=='1'){
-              cout<<"\n\t\tSe ha Realizado la Facturacion del Item:\n\n";
-              //cout<<"\t\t Nombre\t\t"<<"Codigo"<<"\t\tCosto"<<endl;
-              //cout<<"\t\t---------------------------------------"<<endl;
+              cout<<"\n\t\tSe ha Realizado la Facturacion del Item:\n\n\n\n";
+              cout<<"\t\t----------------------------------------------"<<endl;
+              cout<<"\n\t\t\t     WORLD COMPUTER STORE S.A.\n";
+              cout<<"\n\t\t\t R.U.C.: 280607-1-80808  D.V.: 19\n";
+              cout<<"\n\t\t\t\t FACTURA\n";
+              cout<<"\n\t\t Numero: 1FHEBD1054087-6002\tRUC/CI: N/A";
+              cout<<"\n\t\t Cliente: "<<NombreCliente<<endl;
               cout<<"\n\t\t Nombre\t"<<"\tCodigo "<<"\t\tCantidad Costo "<<endl;
               cout<<"\t\t----------------------------------------------"<<endl;
-              //cantEncontrada = cantEncontrada;
-            //  do{
-                p = facturaProducto(p,NombrePdo,NULL,x,cant_paraFacturar,&Total,&SubTotal,&ITBM);        //funcion elimina dato
-            //    m++;
-            //    }while(cant_paraFacturar!=m); 
-                cout<<"\n\t\t---------------------------------------------"<<endl;
+              EfectivoView = 1;
+                p = facturaProducto(p,NombrePdo,x,cant_paraFacturar,EfectivoView,&Total,&SubTotal,&ITBM);        //funcion elimina dato
+            
+                cout<<"\n\t\t----------------------------------------------"<<endl;
                 cout<<"\t\t SubTotal:\t\t\t\t"<<SubTotal<<endl;
                 cout<<"\t\t ITBM:    \t\t\t\t"<<ITBM<<endl;
                 cout<<"\t\t----------------------------------------------"<<endl;
                 cout<<"\t\t Total:   \t\t\t\t"<<Total<<endl;
+                Cambio = Efectivo - Total;
+                cout<<"\t\t Efectivo:\t\t\t\t"<<Efectivo<<endl;
+                cout<<"\t\t Cambio:  \t\t\t\t"<<Cambio<<endl;
                 cout<<"\t\t----------------------------------------------\n"<<endl;
               }else if(sino=='2'){cout<<"\n\t\t\tPedido Cancelado....\n\n";sleep(1);
               }else{cout<<"\nletra o simbolo '"<<sino<<"' no es una Opcion"<<endl;sleep(2);}}}
          return p;
 }
 
-Inventario *buscarCodigoPdo(Inventario *p,char CodigoPdo[10]){
-    Inventario *facturaProducto(Inventario *,char [],float ,int ,int ,float *,float *,float *);        //funcion elimina dato
-    Inventario *q;
+Inventario *buscarCodigoPdo(Inventario *p,char CodigoPdo[10],char NombreCliente[20]){
+    Inventario *facturaProducto(Inventario *,char [],int ,int ,int ,float *,float *,float *);        //funcion elimina dato
+    Inventario *q,*E;
     bool r = false;
-    int x = 2,cantEncontrada=0,cant_paraFacturar,m=0;
-    float Total=0,SubTotal=0,ITBM=0;
+    int x = 2,cantEncontrada=0,cant_paraFacturar,EfectivoView=0; 
+    float Total=0,SubTotal=0,ITBM=0,Efectivo,Cambio;
     char sino;
-    q=p;
-    cout<<"\n\t\t Nombre\t\t"<<"Costo "<<"\t\tCodigo"<<endl;
-    cout<<"\t\t--------------------------------------"<<endl;
+    q=p;  E=p;
+    cout<<"\n\t\t Nombre\t"<<"\tCosto "<<"\tCodigo \tCantidad "<<endl;
+    cout<<"\t\t-----------------------------------------"<<endl;
     while(q!=NULL){
         if(!strcmp(CodigoPdo,q->CodigoProd)){
-          cout<<"\t\t "<<q->NombreProd<<"\t\t"<<q->CostoProd<<"\t\t"<<q->CodigoProd<<endl; cantEncontrada++;   }
+        cout<<"\t\t "<<q->NombreProd<<"\t\t"<<q->CostoProd<<"\t"<<q->CodigoProd<<"\t"<<q->CantidadProd<<endl; cantEncontrada = q->CantidadProd;  }
       q=q->nodo;
       }
          if(q==NULL && cantEncontrada >= 1){
@@ -404,107 +418,66 @@ Inventario *buscarCodigoPdo(Inventario *p,char CodigoPdo[10]){
           if(cantEncontrada > 1){cout<<"\n\t\tSe han encontrado "<<cantEncontrada<<" Elemento\n\n";}
             r = true;
          }else{
-          cout<<"\n\t\tNo exite Item en esta Lista\n\n";   }
+         cout<<"\n\t\t\tNo exite Item en esta Lista\n\n";   }
          if(r){
          cout<<"\t\tCantidad a Facturar: ";
          cin>>cant_paraFacturar;
          if(cant_paraFacturar>cantEncontrada){
          cout<<"\n\t\tCantidad insuficiente para el pedido!!\n\n";
          }else{
+          EfectivoView = 0;
+          cout<<"\t\t|----------------------------------------------|"<<endl;
+          E = facturaProducto(E,CodigoPdo,x,cant_paraFacturar,EfectivoView,&Total,&SubTotal,&ITBM);
+          cout<<"\t\t|----------------------------------------------|"<<endl;
+          cout<<"\t\t    |\t Saldo a Pagar :: $ "<<Total<<"       |"<<endl;
+          cout<<"\t\t|----------------------------------------------|"<<endl;
+          cout<<"\t\t\tEfectivo >> $ ";cin>>Efectivo;
+          Total=0;SubTotal=0;ITBM=0;
           cout<<"\n\t\t\t[1] Facturar \t";
           cout<<"[2] Cancelar \n";
           cout<<"\n\t\t\t::> ";cin>>sino;
-           // if(!(sino=='1')){
-            //    cout<<" '"<<sino<<"' no es una Opcion"<<endl; }
             if(sino=='1'){
-              cout<<"\n\t\tSe ha Realizado la Facturacion del Item:\n\n";
-              cout<<"\t\t Nombre\t\t"<<"Codigo"<<"\t\tCosto"<<endl;
-              cout<<"\t\t---------------------------------------"<<endl;
-              do{
-                p = facturaProducto(p,CodigoPdo,NULL,x,cant_paraFacturar,&Total,&SubTotal,&ITBM);        //funcion elimina dato
-                m++;
-                }while(cant_paraFacturar!=m);
-                cout<<"\n\t\t---------------------------------------"<<endl;
-                cout<<"\t\t SubTotal:\t\t\t"<<SubTotal<<endl;
-                cout<<"\t\t ITBM:    \t\t\t"<<ITBM<<endl;
-                cout<<"\t\t---------------------------------------"<<endl;
-                cout<<"\t\t Total:   \t\t\t"<<Total<<endl;
-                cout<<"\t\t---------------------------------------\n"<<endl;
+              cout<<"\n\t\tSe ha Realizado la Facturacion del Item:\n\n\n\n";
+              cout<<"\t\t----------------------------------------------"<<endl;
+              cout<<"\n\t\t\t     WORLD COMPUTER STORE S.A.\n";
+              cout<<"\n\t\t\t R.U.C.: 280607-1-80808  D.V.: 19\n";
+              cout<<"\n\t\t\t\t FACTURA\n";
+              cout<<"\n\t\t Numero: 1FHEBD1054087-6002\tRUC/CI: N/A";
+              cout<<"\n\t\t Cliente: "<<NombreCliente<<endl;
+              cout<<"\n\t\t Nombre\t"<<"\tCodigo "<<"\t\tCantidad Costo "<<endl;
+              cout<<"\t\t----------------------------------------------"<<endl;
+              EfectivoView = 1;
+                p = facturaProducto(p,CodigoPdo,x,cant_paraFacturar,EfectivoView,&Total,&SubTotal,&ITBM);        //funcion elimina dato
+            
+                cout<<"\n\t\t----------------------------------------------"<<endl;
+                cout<<"\t\t SubTotal:\t\t\t\t"<<SubTotal<<endl;
+                cout<<"\t\t ITBM:    \t\t\t\t"<<ITBM<<endl;
+                cout<<"\t\t----------------------------------------------"<<endl;
+                cout<<"\t\t Total:   \t\t\t\t"<<Total<<endl;
+                Cambio = Efectivo - Total;
+                cout<<"\t\t Efectivo:\t\t\t\t"<<Efectivo<<endl;
+                cout<<"\t\t Cambio:  \t\t\t\t"<<Cambio<<endl;
+                cout<<"\t\t----------------------------------------------\n"<<endl;
               }else if(sino=='2'){cout<<"\n\t\t\tPedido Cancelado....\n\n";sleep(1);
               }else{cout<<"\nletra o simbolo '"<<sino<<"' no es una Opcion"<<endl;sleep(2);}}}
          return p;
 }
 
-Inventario *buscarPrecioPdo(Inventario *p,float PrecioPdo){
-    Inventario *facturaProducto(Inventario *,char [],float ,int ,int ,float *,float *,float *);        //funcion elimina dato
-    Inventario *q;
-    bool r = false;
-    int x = 3,cantEncontrada=0,cant_paraFacturar;
-    float Total=0,SubTotal=0,ITBM=0;
-    char sino;
-    q=p;
-    cout<<"\n\t\t Nombre\t\t"<<"Costo "<<"\t\tCodigo"<<endl;
-    cout<<"\t\t--------------------------------------"<<endl;
-    while(q!=NULL){
-        if(PrecioPdo==q->CostoProd){
-          cout<<"\t\t "<<q->NombreProd<<"\t\t"<<q->CostoProd<<"\t\t"<<q->CodigoProd<<endl; cantEncontrada++;   }
-      q=q->nodo;
-      }
-         if(q==NULL && cantEncontrada >= 1){
-          if(cantEncontrada == 1){cout<<"\n\t\tSolo se ha encontrado un ("<<cantEncontrada<<") Elemento\n\n";}
-          if(cantEncontrada > 1){cout<<"\n\t\tSe han encontrado "<<cantEncontrada<<" Elemento\n\n";}
-        r = true;
-         }else{
-         cout<<"\n\t\tNo exite Item en esta Lista\n\n";   }
-         if(r){
-         cout<<"\t\tCantidad a Facturar: ";
-         cin>>cant_paraFacturar;
-         if(cant_paraFacturar>cantEncontrada){
-         cout<<"\n\t\tCantidad insuficiente para el pedido!!\n\n";
-         }else{
-          cout<<"\n\t\t\t[1] Facturar \t";
-          cout<<"[2] Cancelar \n";
-          cout<<"\n\t\t\t::> ";cin>>sino;
-           // if(!(sino=='1')){
-            //    cout<<" '"<<sino<<"' no es una Opcion"<<endl; }
-            if(sino=='1'){
-              cout<<"\n\t\tSe ha Realizado la Facturacion del Item:\n\n";
-              cout<<"\t\t Nombre\t\t"<<"Codigo"<<"\t\tCosto"<<endl;
-              cout<<"\t\t---------------------------------------"<<endl;
-             // do{
-                p = facturaProducto(p,NULL,PrecioPdo,x,cant_paraFacturar,&Total,&SubTotal,&ITBM);        //funcion elimina dato
-               // m++;
-               // }while(cant_paraFacturar!=m); 
-                cout<<"\n\t\t---------------------------------------"<<endl;
-                cout<<"\t\t SubTotal:\t\t\t"<<SubTotal<<endl;
-                cout<<"\t\t ITBM:    \t\t\t"<<ITBM<<endl;
-                cout<<"\t\t---------------------------------------"<<endl;
-                cout<<"\t\t Total:   \t\t\t"<<Total<<endl;
-                cout<<"\t\t---------------------------------------\n"<<endl;
-              }else if(sino=='2'){cout<<"\n\t\t\tPedido Cancelado....\n\n";sleep(1);
-              }else{cout<<"\nletra o simbolo '"<<sino<<"' no es una Opcion"<<endl;sleep(2);}}}
-         return p;
-}
-
-
-Inventario *facturaProducto(Inventario *p,char nom[20],float PrecioProd,int x,int cant_paraFacturar,float *Total=0,float *SubTotal=0,float *ITBM=0){
+Inventario *facturaProducto(Inventario *p,char nom[20],int x,int cant_paraFacturar,int EfectivoView,float *Total=0,float *SubTotal=0,float *ITBM=0){
     Inventario *q,*t,*z;
       q=z=p;
       bool r = true;
-      int suma=0,ultimo;
+      int suma=0;
       if(x == 1){
-        while(z!=NULL){                         //vea lo que se esta facturando o eliminado de la lista
+        while(z!=NULL){                         
           if(!strcmp(nom,z->NombreProd)){
             cout<<"\t\t "<<z->NombreProd<<"\t\t"<<z->CodigoProd<<"\t\t  "<<cant_paraFacturar<<"  x  "<<z->CostoProd<<endl;
-              z->CostoProd;
-               ultimo = z->CantidadProd;
-              if(cant_paraFacturar == z->CantidadProd){
-                ultimo = 1;
-              }else{
-                z->CantidadProd -= cant_paraFacturar;
-              }
-               *SubTotal+=z->CostoProd; break;}
-             z=z->nodo;     }
+           
+          if(EfectivoView == 1){    z->CantidadProd -= cant_paraFacturar;  }
+              // Este (if) hace que no descuente los item cuando solo se quiere el precio de aquellos
+              *SubTotal+=z->CostoProd; break;  }
+              z=z->nodo;     }
+
         while(strcmp(nom,q->NombreProd) && (r == true)){
             if(q->nodo!=NULL){
                   t=q;   q=q->nodo;
@@ -513,7 +486,8 @@ Inventario *facturaProducto(Inventario *p,char nom[20],float PrecioProd,int x,in
       }else if(x == 2){
         while(z!=NULL){                         //vea lo que se esta facturando o eliminado de la lista
           if(!strcmp(nom,z->CodigoProd)){
-            cout<<"\t\t "<<z->NombreProd<<"\t\t"<<z->CodigoProd<<"\t\t"<<z->CostoProd<<endl; /*suma++; */
+            cout<<"\t\t "<<z->NombreProd<<"\t\t"<<z->CodigoProd<<"\t\t"<<z->CostoProd<<endl; 
+            if(EfectivoView == 1){    z->CantidadProd -= cant_paraFacturar;  }
               *SubTotal+=z->CostoProd; break;}
             z=z->nodo;     }
         while(strcmp(nom,q->CodigoProd) && (r == true)){
@@ -521,19 +495,9 @@ Inventario *facturaProducto(Inventario *p,char nom[20],float PrecioProd,int x,in
                t=q;    q=q->nodo;
                }else{  r = false;   }
         }
-      }else if (x == 3){
-        while(z!=NULL){                         //vea lo que se esta facturando o eliminado de la lista
-          if(PrecioProd == z->CostoProd){
-            cout<<"\t\t "<<z->NombreProd<<"\t\t"<<z->CodigoProd<<"\t\t"<<z->CostoProd<<endl; /*suma++; */
-              *SubTotal+=z->CostoProd; break;}
-            z=z->nodo;     }
-        while((PrecioProd!=q->CostoProd) && (r == true)){
-            if(q->nodo!=NULL){
-               t=q;    q=q->nodo;
-               }else{   r = false;   }
-        }
       }
-      if(ultimo==1){
+
+      if(z->CantidadProd == 0 && EfectivoView == 1){ 
       if(r == false){
           cout<<"Elemento con informacion x no se encuantra en lista\n\n";
       }else{
@@ -542,14 +506,13 @@ Inventario *facturaProducto(Inventario *p,char nom[20],float PrecioProd,int x,in
           }else{
                 t->nodo = q->nodo;
                 }
-      }
+          }
       }
       *SubTotal *= cant_paraFacturar;
       *ITBM = (*SubTotal * 0.07);
       *Total = *ITBM + *SubTotal;
       return p;
 }
-
 
 Inventario *elimina(Inventario *p){
   Inventario *q;
@@ -558,3 +521,41 @@ Inventario *elimina(Inventario *p){
   free(q);
   return (p);
 } 
+
+Inventario *buscarNombrePdoDefectuoso(Inventario *p,char NombrePdo[20],char NombreCliente[20]){
+    Inventario *facturaProducto(Inventario *,char [],int ,int ,int ,float *,float *,float *);        //funcion elimina dato
+    Inventario *q;
+    bool r = false;
+    int x = 1,cantEncontrada=0,cantDelete;
+    float Total,SubTotal,ITBM;  // esto no se usa pero se tiene por que la funcion de factura lo requiere
+    char sino;
+    q=p;
+    cout<<"\n\t\t Nombre\t"<<"\tCosto "<<"\tCodigo \tCantidad "<<endl;
+    cout<<"\t\t-----------------------------------------"<<endl;
+    while(q!=NULL){
+        if(!strcmp(NombrePdo,q->NombreProd)){
+        cout<<"\t\t "<<q->NombreProd<<"\t\t"<<q->CostoProd<<"\t"<<q->CodigoProd<<"\t"<<q->CantidadProd<<endl; cantEncontrada = q->CantidadProd;  }
+      q=q->nodo;
+      }
+         if(q==NULL && cantEncontrada >= 1){
+          if(cantEncontrada == 1){cout<<"\n\t\tSolo se ha encontrado un ("<<cantEncontrada<<") Elemento\n\n";}
+          if(cantEncontrada > 1){cout<<"\n\t\tSe han encontrado "<<cantEncontrada<<" Elemento\n\n";}
+            r = true;
+         }else{
+         cout<<"\n\t\t\tNo exite Item en esta Lista\n\n";   }
+         if(r){
+         cout<<"\t\tCantidad a Eliminar: ";
+         cin>>cantDelete;
+         if(cantDelete>cantEncontrada){
+         cout<<"\n\t\tNo exite dicha Cantidad!!\n\n";
+         }else{
+          cout<<"\n\t\t\tEsta seguro que desea Eliminar ";
+          cout<<"\n\t\t\t[1] Si \t";
+          cout<<"[2] No \n";
+          cout<<"\n\t\t\t::> ";cin>>sino;
+            p = facturaProducto(p,NombrePdo,1,cantDelete,1,&Total,&SubTotal,&ITBM);        //funcion elimina dato
+            cout<<"\n\n\t\t\t operacion realizada...\n\n\n";
+          }
+        }
+    return p;
+}
