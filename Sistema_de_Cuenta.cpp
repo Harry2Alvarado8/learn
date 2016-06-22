@@ -25,6 +25,7 @@ int main(){
     bool borraCrea=false;//Variable borraCrea es la que me ayudara que la funcion de crear una lista cambie a insertar 
     Inventario *PrimerMenu(Inventario *,bool *); 
     Inventario *SegundoMenu(Inventario *,bool *);
+    void guardar(Inventario *);
     textcolor(7);
 
     do{ system("cls");
@@ -43,6 +44,7 @@ int main(){
       cout<<"\t\t\t\t    ::>> ";cin>>menu;
       switch(menu){
         case '0':
+              guardar(p);
               cout<<"\n\n\t\t\t\tSaliendo..";sleep(1);cout<<".";sleep(0.5);cout<<".";sleep(1);cout<<".";
           break;
         case '1':    p = PrimerMenu(p,&borraCrea);
@@ -81,7 +83,7 @@ Inventario *PrimerMenu(Inventario *p,bool *borraCrea){
             cout<<"\t\t\t|                                  |"<<endl;
             cout<<"\t\t\t|   2. Ver el Inventario           |"<<endl;
             cout<<"\t\t\t|                                  |"<<endl;
-            cout<<"\t\t\t|   3. leer lista Existente        |"<<endl;
+            cout<<"\t\t\t|   3. Buscar lista Existente      |"<<endl;
             cout<<"\t\t\t|                                  |"<<endl;
             cout<<"\t\t\t|   4. Borrar Articulo Defectuoso  |"<<endl;
             cout<<"\t\t\t|                                  |"<<endl;
@@ -105,7 +107,6 @@ Inventario *PrimerMenu(Inventario *p,bool *borraCrea){
                   break;
                 case '3':
                     p = InventarioExitente(borraCrea);
-                    cout<<"\n\t\tInventario Agregado Satisfactoriamente!!..\n\n";
                     system("pause");
                   break;
                 case '4':
@@ -196,16 +197,16 @@ Inventario *buscarProducto(Inventario *p,char NombreCliente[20]){
       cout<<"\t\tComo deseas buscar el producto?\n";
       cout<<"\t\t  [1] Nombre\n";
       cout<<"\t\t  [2] Codigo\n";
-      cout<<"\t\t  [3] Dejar de buscar\n";
+      cout<<"\t\t  [3] Dejar de buscar o atender\n";
       cout<<"\t\t::> ";cin>>menu;
       switch(menu){
         case '1':
-              cout<<"\n\t\tNombre del Item: "; cin>>NombreProd;
+              cout<<"\n\t\tNombre del articulo: "; cin>>NombreProd;
                 p = buscarNombrePdo(p,NombreProd,NombreCliente);
               system("pause");
           break;
         case '2':
-              cout<<"\n\t\tCodigo del Item: "; cin>>CodigoProd;
+              cout<<"\n\t\tCodigo del articulo: "; cin>>CodigoProd;
                 p = buscarCodigoPdo(p,CodigoProd,NombreCliente);
               system("pause");
           break;
@@ -222,10 +223,10 @@ Inventario *creaLista(Inventario *p,bool *borraCrea){
     if(*borraCrea == false){
       *borraCrea=true;
       p = memoria(p);
-      cout<<"\n\tNombre de Item:     \t";  cin>>p->NombreProd;
-      cout<<"\tCodigo del Item:    \t";  cin>>p->CodigoProd;
-      cout<<"\tValor del Item:     \t";  cin>>p->CostoProd;
-      cout<<"\tCatidad de Item:     \t";  cin>>p->CantidadProd;
+      cout<<"\n\tNombre de articulo:     \t";  cin>>p->NombreProd;
+      cout<<"\tCodigo del articulo:    \t";  cin>>p->CodigoProd;
+      cout<<"\tCosto del articulo:     \t";  cin>>p->CostoProd;
+      cout<<"\tCantidad de articulo:     \t";  cin>>p->CantidadProd;
       p->nodo = NULL;
       cout<<"\n\n\t [1] Seguir Ingresando\n\t [2] Dejar de Ingresar\n"<<endl;
       cout<<"\t::>: ";cin>>sino;
@@ -235,10 +236,10 @@ Inventario *creaLista(Inventario *p,bool *borraCrea){
     while(sino=='1'){
         if(sino == '2'){break;} 
          q = memoria(q);
-          cout<<"\n\tNombre de Item:  \t"; cin>>q->NombreProd;
-          cout<<"\tCodigo del Item   \t"; cin>>q->CodigoProd;
-          cout<<"\tValor del Item:   \t"; cin>>q->CostoProd;
-          cout<<"\tCatidad de Item:     \t";  cin>>q->CantidadProd;
+          cout<<"\n\tNombre de articulo:     \t";  cin>>q->NombreProd;
+          cout<<"\tCodigo del articulo:    \t";  cin>>q->CodigoProd;
+          cout<<"\tCosto del articulo:     \t";  cin>>q->CostoProd;
+          cout<<"\tCantidad de articulo:     \t";  cin>>q->CantidadProd;
           q->nodo=p;
           p=q;
           cout<<"\n\n\t [1] Seguir Ingresando\n\t [2] Dejar de Ingresar\n"<<endl;
@@ -253,10 +254,10 @@ Inventario *insertarLista(Inventario *p){
   char sino;
   do{
     q = memoria(q);
-    cout<<"\n\tNombre de Item:  \t"; cin>>q->NombreProd;
-    cout<<"\tCodigo del Item   \t"; cin>>q->CodigoProd;
-    cout<<"\tValor del Item:   \t"; cin>>q->CostoProd;
-    cout<<"\tCatidad de Item:     \t";  cin>>q->CantidadProd;
+    cout<<"\n\tNombre de articulo:  \t"; cin>>q->NombreProd;
+    cout<<"\tCodigo del articulo   \t"; cin>>q->CodigoProd;
+    cout<<"\tCosto del articulo:   \t"; cin>>q->CostoProd;
+    cout<<"\tCantidad de articulo:     \t";  cin>>q->CantidadProd;
     q->nodo = p;
     p=q;
     cout<<"\n\n\t [1] Seguir Ingresando\n\t [2] Dejar de Ingresar\n"<<endl;
@@ -294,13 +295,15 @@ Inventario *InventarioExitente(bool *borraCrea){
   Inventario *elimina(Inventario *);
   fstream y;
   Inventario *p,*q;
-  char Nombre[20],Codigo[7];
+  char Nombre[20],Codigo[7],namefile[15];
   float Costo;
   int Cantidad;
   bool controlaCrea = *borraCrea; 
   q = memoria(q);
-  y.open("prueba2805.txt",ios::in);
-  //if(*borraCrea == false){
+  cout<<"\n\n\t Nota: \n\t importante agregar el extension del archivo (Ejm.: .txt, .dat, .etc )";
+  cout<<"\n\n\t\t Nombre del archivo existente: ";cin>>namefile;
+  y.open(namefile,ios::in);
+  if(!y){cout<<"\n\n\t\t\t archivo no exite\n\n"; }else{
     while(controlaCrea == false && !y.eof()){
       p = memoria(p);
       y>>Nombre;
@@ -312,7 +315,7 @@ Inventario *InventarioExitente(bool *borraCrea){
         strcpy(p->CodigoProd,Codigo);
         p->CantidadProd = Cantidad;
       p->nodo = NULL;
-      controlaCrea = true;}  // }
+      controlaCrea = true;}  
       do{
       q = memoria(q);
       y>>Nombre;
@@ -328,7 +331,9 @@ Inventario *InventarioExitente(bool *borraCrea){
       }while(!y.eof());
       *borraCrea = true;
   y.close();
-  p = elimina(p);
+  p = elimina(p); 
+  cout<<"\n\t\tInventario Agregado Satisfactoriamente!!..\n\n";
+  }
   return p; 
 }           
 
@@ -371,7 +376,8 @@ Inventario *buscarNombrePdo(Inventario *p,char NombrePdo[20],char NombreCliente[
           cout<<"[2] Cancelar \n";
           cout<<"\n\t\t\t::> ";cin>>sino;
             if(sino=='1'){
-              cout<<"\n\t\tSe ha Realizado la Facturacion del Item:\n\n\n\n";
+              system("cls");
+              cout<<"\n\tSe ha Realizado la Facturacion del Item:\n\n\n\n";
               cout<<"\t\t----------------------------------------------"<<endl;
               cout<<"\n\t\t\t     WORLD COMPUTER STORE S.A.\n";
               cout<<"\n\t\t\t R.U.C.: 280607-1-80808  D.V.: 19\n";
@@ -436,7 +442,8 @@ Inventario *buscarCodigoPdo(Inventario *p,char CodigoPdo[10],char NombreCliente[
           cout<<"[2] Cancelar \n";
           cout<<"\n\t\t\t::> ";cin>>sino;
             if(sino=='1'){
-              cout<<"\n\t\tSe ha Realizado la Facturacion del Item:\n\n\n\n";
+              system("cls");
+              cout<<"\n\tSe ha Realizado la Facturacion del Item:\n\n\n\n";
               cout<<"\t\t----------------------------------------------"<<endl;
               cout<<"\n\t\t\t     WORLD COMPUTER STORE S.A.\n";
               cout<<"\n\t\t\t R.U.C.: 280607-1-80808  D.V.: 19\n";
