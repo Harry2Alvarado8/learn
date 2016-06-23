@@ -25,9 +25,10 @@ int main(){
     bool borraCrea=false;//Variable borraCrea es la que me ayudara que la funcion de crear una lista cambie a insertar 
     Inventario *PrimerMenu(Inventario *,bool *); 
     Inventario *SegundoMenu(Inventario *,bool *);
+    Inventario *MasterExitente(bool *);
     void guardar(Inventario *);
     textcolor(7);
-
+    p = MasterExitente(&borraCrea);
     do{ system("cls");
       cout<<"\n\t\t\t     WORLD COMPUTER STORE S.A.\n";
       cout<<"\n\t\t\t R.U.C.: 280607-1-80808  D.V.: 19\n";
@@ -62,11 +63,12 @@ Inventario *memoria(Inventario *x){
 }
 
 Inventario *PrimerMenu(Inventario *p,bool *borraCrea){
-    char menu;
+    char menu,archivoPropio[15]; int sino;
     void guardar(Inventario*);          //Guarda el invetario
+    void guardarPropio(Inventario *,char []); 
     void mostrarInventario(Inventario*);           //Imprime en pantalla lista completa de ultimo a primero
     char NombreProd[20];
-    Inventario *InventarioExitente(bool *);  
+    Inventario *InventarioExitente(bool *); 
     Inventario *creaLista(Inventario *,bool *);
     Inventario *insertarLista(Inventario *);
     Inventario* buscarNombrePdoDefectuoso(Inventario*,char [],char []);
@@ -117,9 +119,16 @@ Inventario *PrimerMenu(Inventario *p,bool *borraCrea){
                     system("pause");
                   break;
                 case '5':
-                  if(*borraCrea){guardar(p); 
-                    cout<<"\n\t\t\tInventario Salvado, Satisfactoriamente\n\n";
-                  }else{cout<<"\n\tNo se ha Creado Ninguna lista\n\n";}
+                  if(*borraCrea){
+                    cout<<"\n\t\t\tDeseas ponerle un nombre propio al archivo\n\n\t\t\t [1] Si\t  [2] No \n\t\t\t:> ";cin>>sino;
+                    if(sino==1){
+                      cout<<"Nombre que desea darle al archivo: ";cin>>archivoPropio;
+                      guardarPropio(p,archivoPropio);
+                    }else{
+                      guardar(p); 
+                      cout<<"\n\t\t\tInventario Salvado, Satisfactoriamente\n\n";
+                    }
+                  }else{ cout<<"\n\tNo se ha Creado Ninguna lista\n\n"; }
                     system("pause");
                   break;
                 case '6':
@@ -282,7 +291,19 @@ void guardar(Inventario *p){
     fstream x;
     Inventario *q;
     q=p;
-    x.open("prueba2805.txt",ios::out);
+    x.open("master.txt",ios::out);
+      if(!x)cout<<"Error al guardar los datos!!...\n\n";
+      while(q!=NULL){
+
+        x<<q->NombreProd<<"\t\t"<<q->CostoProd<<"\t\t"<<q->CodigoProd<<"\t\t"<<q->CantidadProd<<endl;
+        q=q->nodo;   }
+      x.close();
+}
+void guardarPropio(Inventario *p, char archivoPropio[15]){
+    fstream x;
+    Inventario *q;
+    q=p;
+    x.open(archivoPropio,ios::out);
       if(!x)cout<<"Error al guardar los datos!!...\n\n";
       while(q!=NULL){
 
@@ -336,6 +357,50 @@ Inventario *InventarioExitente(bool *borraCrea){
   }
   return p; 
 }           
+
+Inventario *MasterExitente(bool *borraCrea){
+  Inventario *elimina(Inventario *);
+  fstream y;
+  Inventario *p,*q;
+  char Nombre[20],Codigo[7],namefile[15];
+  float Costo;
+  int Cantidad;
+  bool controlaCrea = *borraCrea; 
+  q = memoria(q);
+  y.open("master.txt",ios::in);
+  if(!y){cout<<"\n\n\t\t\t archivo master no Creado\n\n"; }else{
+    while(controlaCrea == false && !y.eof()){
+      p = memoria(p);
+      y>>Nombre;
+      y>>Costo;
+      y>>Codigo;
+      y>>Cantidad;
+        strcpy(p->NombreProd,Nombre);
+        p->CostoProd = Costo;
+        strcpy(p->CodigoProd,Codigo);
+        p->CantidadProd = Cantidad;
+      p->nodo = NULL;
+      controlaCrea = true;}  
+      do{
+      q = memoria(q);
+      y>>Nombre;
+      y>>Costo;
+      y>>Codigo;
+      y>>Cantidad;
+        strcpy(q->NombreProd,Nombre);
+        q->CostoProd = Costo;
+        strcpy(q->CodigoProd,Codigo);
+        q->CantidadProd = Cantidad;
+      q->nodo=p;
+      p=q;
+      }while(!y.eof());
+      *borraCrea = true;
+  y.close();
+  p = elimina(p); 
+  cout<<"\n\t\tArchivo leido\n\n";
+  }
+  return p; 
+} 
 
 Inventario *buscarNombrePdo(Inventario *p,char NombrePdo[20],char NombreCliente[20]){
     Inventario *facturaProducto(Inventario *,char [],int ,int ,int ,float *,float *,float *);        //funcion elimina dato
