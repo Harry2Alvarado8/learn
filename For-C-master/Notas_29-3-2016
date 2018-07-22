@@ -1,0 +1,30 @@
+arreglos y funciones
+los arreglos son estructuras fundamentalesrgo  de almacenamiento de datos(es parte del lenguaje)
+las variables y los punteros.
+los arreglos son capaces de almacenar un volumen alto de informacion sin embargo
+tienen que ser del mismo tipo.
+Declaracion de arreglo:
+al igual que las variables se debe declarar de los tipos todos conocidos que
+maneja el lenguaje incluyendo entre corchete el tamaño del arreglo.
+los arreglos pueden ser de una, dos o mas dimenciones. son tres las operaciones basicas
+con arreglos (vectores o matrices). carga descarga y recorrido(visitar cada una de las celdas con un diferente objetivo).
+estas tres operaciones se puden realizar en el MAIN recomendablemente en las funciones.
+
+arreglos y funciones:
+los arreglos e pueden enviar a las funciones como argumentos de ellas o de las mismas
+funciones.
+cuando esto ocurre el arreglo se esta enviando por referencia a la funcion los que
+significa que no necesita ser retornado pero cualquier cambio es permanete en todo el programa.
+su manejo es equiparable a los punteros.
+
+
+Escrbir un programa que cree una funcion llamada carga cullo trabajo sera
+el de cargar un vector de una capacidad maxima de 50 valores
+con manejo discresional del usuario.
+
+
+********QUIZ******
+1- mover la tarea a una funcion
+2- agregarle una funcion llamada recorrido cullo trabajo es sumar todas las edades para que se impreso en el MAIN
+
+arreglos de estructuras (proxima clase)
